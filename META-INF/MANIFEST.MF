@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProyectoWebADSII
+Bundle-SymbolicName: ProyectoWebADSII
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: ProyectoWebADSII
+Export-Package: pe.com.project,
+ pe.com.project.model,
+ pe.com.project.repository
