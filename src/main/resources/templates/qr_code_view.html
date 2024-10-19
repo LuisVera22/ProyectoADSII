@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <title>Código QR</title>
+</head>
+<body>
+    <h1>Código QR para el DNI: <span th:text="${dni}"></span></h1>
+    <img th:src="'data:image/png;base64,' + ${qrCode}" alt="Código QR"/>
+</body>
+</html>

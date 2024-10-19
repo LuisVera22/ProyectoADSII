@@ -1,10 +1,13 @@
 package pe.com.project.model.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -51,4 +54,7 @@ public class UserEntity {
     private String password;
 
     private String urlPhoto;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<AttendanceEntity> attendance;
 }

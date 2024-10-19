@@ -61,10 +61,16 @@ public class UserController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/error_page")
+	public String getErrorPage() {
+		return "redirect:/error_page";
+	}
+	
+
 	@GetMapping("/user_list")
 	public String userList(HttpSession session, Model model, HttpServletResponse response) {
 		if (session.getAttribute("name") == null) {
-			return "redirect:/";
+			return "redirect:/error_page";
 		}
 		setCacheHeaders(response);
 		List<UserEntity> userList = userService.userList();
@@ -73,7 +79,10 @@ public class UserController {
 	}
 
 	@GetMapping("register_user")
-	public String getRegisterUser(Model model, HttpServletResponse response) {
+	public String getRegisterUser(Model model, HttpServletResponse response, HttpSession session) {
+		if (session.getAttribute("name") == null) {
+			return "redirect:/error_page";
+		}
 		setCacheHeaders(response);
 		model.addAttribute("user", new UserEntity());
 		return "register_user";
