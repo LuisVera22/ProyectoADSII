@@ -1,6 +1,6 @@
 package pe.com.project.controller;
 
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -19,15 +19,27 @@ import pe.com.project.service.AttendanceService;
 import pe.com.project.service.QRCodeService;
 import pe.com.project.service.UserService;
 
-
 @Controller
 @RequiredArgsConstructor
 public class QRCodeController {
 
-    private final QRCodeService qrCodeService;
-    private final UserService userService;
     @Lazy
     private final AttendanceService attendanceService;
+    private final QRCodeService qrCodeService;
+    private final UserService userService;
+
+    @GetMapping("/attendance_control")
+    public String viewAttendanceControl(HttpSession session, Model model) {
+        if (session.getAttribute("dni") == null) {
+            return "redirect:/";
+        }
+        String dni = session.getAttribute("dni").toString();
+        UserEntity userFound = userService.searchUserById(dni);
+        AttendanceEntity lastAttendance = attendanceService.getLastAttendanceByDni(dni);
+        model.addAttribute("lastAttendance", lastAttendance);
+        model.addAttribute("user", userFound);
+        return "attendance_control";
+    }
 
     @GetMapping("/generate-qr/{dni}")
     public String generateQRCode(@PathVariable String dni, Model model) {
@@ -39,14 +51,6 @@ public class QRCodeController {
             return "redirect:/error_page";
         }
     }
-
-    @GetMapping("/attendance_control")
-    public String viewAttendanceControl(Model model) {
-		List<UserEntity> userList = userService.userList();
-		model.addAttribute("userList", userList);
-		return "attendance_control";
-    }
-    
 
     @PostMapping("/attendance/{action}/{dni}")
     public ResponseEntity<?> handleAttendanceAction(@PathVariable String action, @PathVariable String dni) {

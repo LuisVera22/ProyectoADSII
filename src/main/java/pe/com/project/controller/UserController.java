@@ -45,6 +45,7 @@ public class UserController {
 		boolean validatedUser = userService.validateUser(userForm);
 		if (validatedUser) {
 			UserEntity user = userRepository.findByEmail(userForm.getEmail());
+			session.setAttribute("dni", user.getDni());
 			session.setAttribute("name", user.getName());
 			session.setAttribute("lastname", user.getLastname());
 			session.setAttribute("urlPhoto", user.getUrlPhoto());
@@ -73,6 +74,11 @@ public class UserController {
 			return "redirect:/error_page";
 		}
 		setCacheHeaders(response);
+
+		String dni = session.getAttribute("dni").toString();
+        UserEntity userFound = userService.searchUserById(dni);
+		model.addAttribute("user", userFound);
+
 		List<UserEntity> userList = userService.userList();
 		model.addAttribute("userList", userList);
 		return "user_list";
@@ -99,7 +105,7 @@ public class UserController {
 			model.addAttribute("registrationError", "Error al registrar el usuario");
 			return "register_user";
 		}
-		return "user_list";
+		return "redirect:/user_list";
 	}
 
 }

@@ -26,4 +26,6 @@ public interface AttendanceRepository extends JpaRepository<AttendanceEntity, In
             @Param("endOfDay") LocalDateTime endOfDay);
 
     List<AttendanceEntity> findAllByUser(UserEntity user);
+
+    AttendanceEntity findFirstByUserDniOrderByTimeDesc(String dni);
 }

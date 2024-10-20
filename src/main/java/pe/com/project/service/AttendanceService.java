@@ -7,4 +7,5 @@ public interface AttendanceService {
     AttendanceEntity registerDeparture(String dni);
     AttendanceEntity startBreak(String dni);
     AttendanceEntity endBreak(String dni);
+    AttendanceEntity getLastAttendanceByDni(String dni);
 }

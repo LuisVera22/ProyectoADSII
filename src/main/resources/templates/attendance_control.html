@@ -91,8 +91,12 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Información:</h6>
               <a class="collapse-item" th:href="@{/user_list}">Listado</a>
-              <a class="collapse-item" th:href="@{/scanQR}">Escanear Asistencia</a>
-              <a class="collapse-item" th:href="@{/attendance_control}">Asistencia</a>
+              <a class="collapse-item" th:href="@{/scanQR}"
+                >Escanear Asistencia</a
+              >
+              <a class="collapse-item" th:href="@{/attendance_control}"
+                >Asistencia</a
+              >
             </div>
           </div>
         </li>
@@ -251,50 +255,37 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table
-                    class="table table-bordered"
-                    id="dataTable"
-                    width="100%"
-                    cellspacing="0"
-                  >
-                    <thead>
-                      <tr>
-                        <th>DNI</th>
-                        <th>Name</th>
-                        <th>Last Name</th>
-                        <th>Role</th>
-                        <th>Schedule</th>
-                        <th>Asistencia</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>DNI</th>
-                        <th>Name</th>
-                        <th>Last Name</th>
-                        <th>Role</th>
-                        <th>Schedule</th>
-                        <th>Asistencia</th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      <tr th:each="user : ${userList}">
-                        <td th:text="${user.dni}"></td>
-                        <td th:text="${user.name}"></td>
-                        <td th:text="${user.lastname}"></td>
-                        <td th:text="${user.role}"></td>
-                        <td th:text="${user.schedule}"></td>
-                        <td>
-                            <a th:href="@{/generate-qr/{dni}(dni=${user.dni})}" class="btn btn-info btn-icon-split">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-info-circle"></i>
-                                </span>
-                                <span class="text">Marcar</span>
-                            </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="user-info">
+                    <div class="row mb-3">
+                      <div class="col-md-2 font-weight-bold">DNI:</div>
+                      <div class="col-md-10" th:text="${user.dni}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-2 font-weight-bold">Nombre:</div>
+                      <div class="col-md-10" th:text="${user.name}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-2 font-weight-bold">Apellido:</div>
+                      <div class="col-md-10" th:text="${user.lastname}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-2 font-weight-bold">Rol:</div>
+                      <div class="col-md-10" th:text="${user.role}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-2 font-weight-bold">Horario:</div>
+                      <div class="col-md-10" th:text="${user.schedule}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-2 font-weight-bold">Estado:</div>
+                      <div class="col-md-10" th:text="${lastAttendance.status}"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

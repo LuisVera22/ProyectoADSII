@@ -159,4 +159,8 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
         return userOptional.get();
     }
+
+    public AttendanceEntity getLastAttendanceByDni(String dni) {
+        return attendanceRepository.findFirstByUserDniOrderByTimeDesc(dni);
+    }
 }
