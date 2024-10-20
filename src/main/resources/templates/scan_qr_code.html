@@ -259,45 +259,61 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <div id="reader"></div>
+                  <div id="qr-reader"></div>
                   <div id="result"></div>
+                  <div>
+                    <label for="action">Seleccione una acción:</label>
+                    <select id="action">
+                      <option value="entry">Entrada</option>
+                      <option value="departure">Salida</option>
+                      <option value="startBreak">Inicio de Descanso</option>
+                      <option value="endBreak">Fin de Descanso</option>
+                    </select>
+                  </div>
 
                   <script>
-                    const html5QrCode = new Html5Qrcode("reader");
+                    function onScanSuccess(qrMessage) {
+                      const dni = qrMessage;
+                      const action = document.getElementById("action").value; // Obtener la acción seleccionada
 
-                    function onScanSuccess(qrCodeMessage) {
-                      document.getElementById("result").innerText =
-                        "Código QR escaneado: " + qrCodeMessage;
+                      html5QrCode.stop().then(() => {
+                        document.getElementById("qr-reader").style.display =
+                          "none";
 
-                      html5QrCode
-                        .stop()
-                        .then((ignore) => {
-                          console.log("Cámara detenida y escaneo finalizado.");
+                        // Enviar el DNI y la acción al controlador
+                        fetch(`/attendance/${action}/${dni}`, {
+                          method: "POST",
                         })
-                        .catch((err) => {
-                          console.error("Error al detener la cámara: ", err);
-                        });
-                    }
-
-                    
-                    function onScanError(errorMessage) {
-                      console.warn(`Error de escaneo: ${errorMessage}`);
-                    }
-
-                    
-                    html5QrCode
-                      .start(
-                        { facingMode: "environment" },
-                        {
-                          fps: 10,
-                          qrbox: { width: 50, height: 50 },
-                        },
-                        onScanSuccess,
-                        onScanError
-                      )
-                      .catch((err) => {
-                        console.error("Error al iniciar el escaneo: ", err);
+                          .then((response) => {
+                            if (response.ok) {
+                              document.getElementById(
+                                "result"
+                              ).innerHTML = `<p>${
+                                action.charAt(0).toUpperCase() + action.slice(1)
+                              } registrado exitosamente para el DNI: <strong>${dni}</strong></p>`;
+                            } else {
+                              document.getElementById(
+                                "result"
+                              ).innerHTML = `<p>Error al registrar la ${action}.</p>`;
+                            }
+                          })
+                          .catch((error) => {
+                            document.getElementById(
+                              "result"
+                            ).innerHTML = `<p>Ocurrió un error en la comunicación con el servidor.</p>`;
+                          });
                       });
+                    }
+
+                    var html5QrCode = new Html5Qrcode("qr-reader");
+                    html5QrCode.start(
+                      { facingMode: "environment" },
+                      {
+                        fps: 10,
+                        qrbox: 250,
+                      },
+                      onScanSuccess
+                    );
                   </script>
                 </div>
               </div>
