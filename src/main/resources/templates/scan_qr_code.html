@@ -210,11 +210,11 @@
                   aria-expanded="false"
                 >
                   <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                    [[${session.name}]] [[${session.lastname}]]
+                    [[${user.name}]] [[${user.lastname}]]
                   </span>
                   <img
                     class="img-profile rounded-circle"
-                    th:src="${session.urlPhoto != null ? '/img/user_photo/' + session.urlPhoto : '/img/undraw_profile.svg'}"
+                    th:src="${user.urlPhoto != null ? '/img/user_photo/' + user.urlPhoto : '/img/undraw_profile.svg'}"
                   />
                 </a>
                 <!-- Dropdown - User Information -->

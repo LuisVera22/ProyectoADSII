@@ -28,4 +28,10 @@ public interface AttendanceRepository extends JpaRepository<AttendanceEntity, In
     List<AttendanceEntity> findAllByUser(UserEntity user);
 
     AttendanceEntity findFirstByUserDniOrderByTimeDesc(String dni);
+
+    @Query("SELECT MONTH(a.time) AS mes, COUNT(a) AS total " +
+           "FROM AttendanceEntity a " +
+           "WHERE a.status = 'COMPLETED' " +
+           "GROUP BY MONTH(a.time)")
+    List<Object[]> countCompletedStatusByMonth();
 }

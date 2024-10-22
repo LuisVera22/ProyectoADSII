@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
 		}
 		try {
 			userFound.setEmail(updatedUser.getEmail());
-			userFound.setName(updatedUser.getName());
+			userFound.setName(updatedUser.getName());	
 			userFound.setLastname(updatedUser.getLastname());
 			userFound.setNumberPhone(updatedUser.getNumberPhone());
 			userFound.setBirthdate(updatedUser.getBirthdate());
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService{
 			throw new RuntimeException("Empleado no encontrado");
 		}
 		userRepository.delete(userFound);
-	}
+	}	
 
 	@Override
 	public boolean validateUser(UserEntity userEntity) {

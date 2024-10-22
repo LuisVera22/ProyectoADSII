@@ -1,5 +1,6 @@
 package pe.com.project.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.Lazy;
@@ -28,11 +29,20 @@ public class QRCodeController {
     private final QRCodeService qrCodeService;
     private final UserService userService;
 
+    private void setCacheHeaders(HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+    }
+
     @GetMapping("/attendance_control")
-    public String viewAttendanceControl(HttpSession session, Model model) {
+    public String viewAttendanceControl(HttpSession session, Model model, HttpServletResponse response) {
         if (session.getAttribute("dni") == null) {
-            return "redirect:/";
+            return "redirect:/error_page";
         }
+
+        setCacheHeaders(response);
+
         String dni = session.getAttribute("dni").toString();
         UserEntity userFound = userService.searchUserById(dni);
         AttendanceEntity lastAttendance = attendanceService.getLastAttendanceByDni(dni);
@@ -41,11 +51,23 @@ public class QRCodeController {
         return "attendance_control";
     }
 
-    @GetMapping("/generate-qr/{dni}")
-    public String generateQRCode(@PathVariable String dni, Model model) {
+    @GetMapping("/generate-qr/{DNI}")
+    public String generateQRCode(@PathVariable String DNI, Model model, HttpSession session,
+            HttpServletResponse response) {
+
+        if (session.getAttribute("dni") == null) {
+            return "redirect:/error_page";
+        }
+        setCacheHeaders(response);
+
         try {
-            String qrCode = qrCodeService.generateQRCode(dni);
+            String qrCode = qrCodeService.generateQRCode(DNI);
+            String dni = session.getAttribute("dni").toString();
+            UserEntity userFound = userService.searchUserById(dni);
+
+            model.addAttribute("user", userFound);
             model.addAttribute("qrCode", qrCode);
+            
             return "qr_code_view";
         } catch (Exception e) {
             return "redirect:/error_page";
@@ -53,9 +75,10 @@ public class QRCodeController {
     }
 
     @PostMapping("/attendance/{action}/{dni}")
-    public ResponseEntity<?> handleAttendanceAction(@PathVariable String action, @PathVariable String dni) {
+    public ResponseEntity<?> handleAttendanceAction(@PathVariable String action, @PathVariable String dni, HttpServletResponse response) {
+        setCacheHeaders(response);
         try {
-            System.out.println("Acción: " + action + ", DNI: " + dni); // Agregado para depuración
+            System.out.println("Acción: " + action + ", DNI: " + dni);
             AttendanceEntity attendance = null;
             switch (action) {
                 case "entry":
@@ -79,7 +102,7 @@ public class QRCodeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("Error inesperado: " + e.getMessage()); // Mensaje de error inesperado
+            System.err.println("Error inesperado: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al registrar la acción: " + action + " para el DNI: " + dni + ". Detalle del error: "
                             + e.getMessage());
@@ -87,7 +110,17 @@ public class QRCodeController {
     }
 
     @GetMapping("/scanQR")
-    public String getScanQR() {
+    public String getScanQR(HttpSession session, Model model, HttpServletResponse response) {
+        if (session.getAttribute("dni") == null) {
+            return "redirect:/error_page";
+        }
+
+        setCacheHeaders(response);
+
+        String dni = session.getAttribute("dni").toString();
+        UserEntity userFound = userService.searchUserById(dni);
+        model.addAttribute("user", userFound);
+
         return "scan_qr_code";
     }
 

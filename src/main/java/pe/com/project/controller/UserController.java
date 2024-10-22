@@ -46,10 +46,13 @@ public class UserController {
 		if (validatedUser) {
 			UserEntity user = userRepository.findByEmail(userForm.getEmail());
 			session.setAttribute("dni", user.getDni());
-			session.setAttribute("name", user.getName());
-			session.setAttribute("lastname", user.getLastname());
-			session.setAttribute("urlPhoto", user.getUrlPhoto());
-			return "redirect:/user_list";
+			
+			if (user.getRole().equals("Administrador")) {
+				return "redirect:/administrator_panel";
+			} else {
+				return "redirect:/delivery_panel";
+			}
+
 		}
 
 		model.addAttribute("invalidLogin", "El usuario no existe");
@@ -64,13 +67,13 @@ public class UserController {
 
 	@GetMapping("/error_page")
 	public String getErrorPage() {
-		return "redirect:/error_page";
+		return "error_page";
 	}
 	
 
 	@GetMapping("/user_list")
 	public String userList(HttpSession session, Model model, HttpServletResponse response) {
-		if (session.getAttribute("name") == null) {
+		if (session.getAttribute("dni") == null) {
 			return "redirect:/error_page";
 		}
 		setCacheHeaders(response);
@@ -78,7 +81,6 @@ public class UserController {
 		String dni = session.getAttribute("dni").toString();
         UserEntity userFound = userService.searchUserById(dni);
 		model.addAttribute("user", userFound);
-
 		List<UserEntity> userList = userService.userList();
 		model.addAttribute("userList", userList);
 		return "user_list";
@@ -86,10 +88,13 @@ public class UserController {
 
 	@GetMapping("register_user")
 	public String getRegisterUser(Model model, HttpServletResponse response, HttpSession session) {
-		if (session.getAttribute("name") == null) {
+		if (session.getAttribute("dni") == null) {
 			return "redirect:/error_page";
 		}
 		setCacheHeaders(response);
+		String dni = session.getAttribute("dni").toString();
+        UserEntity userFound = userService.searchUserById(dni);
+		model.addAttribute("user", userFound);
 		model.addAttribute("user", new UserEntity());
 		return "register_user";
 	}
