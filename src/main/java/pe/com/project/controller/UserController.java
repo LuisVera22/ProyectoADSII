@@ -94,7 +94,7 @@ public class UserController {
 		setCacheHeaders(response);
 		String dni = session.getAttribute("dni").toString();
         UserEntity userFound = userService.searchUserById(dni);
-		model.addAttribute("user", userFound);
+		model.addAttribute("userFound", userFound);
 		model.addAttribute("user", new UserEntity());
 		return "register_user";
 	}

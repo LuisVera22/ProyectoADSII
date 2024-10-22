@@ -57,7 +57,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" th:href="@{/delivery_panel}">
             <img src="img/iconos/iconoAnalisis.png" alt="" height="18" />
             <span>Inicio</span>
           </a>
@@ -90,10 +90,8 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Acciones:</h6>
-              <a class="collapse-item" th:href="@{/attendance_control}"
-                >Marcar</a
-              >
-              <a class="collapse-item" th:href="@{/user_list}">Ver todo</a>
+              <a class="collapse-item" th:href="@{/attendance_control}">Ver estado</a>
+              <a class="collapse-item" th:href="@{/generate-qr/{DNI}(DNI=${user.dni})}">Ver código QR</a>
             </div>
           </div>
         </li>
@@ -119,47 +117,8 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Acciones:</h6>
-              <a class="collapse-item" href="utilities-border.html"
-                >Pendientes</a
-              >
-              <a class="collapse-item" href="utilities-color.html">Ver todo</a>
-            </div>
-          </div>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider" />
-
-        <!-- Heading -->
-        <div class="sidebar-heading">Servicio al Cliente</div>
-
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapsePages"
-            aria-expanded="true"
-            aria-controls="collapsePages"
-          >
-            <img src="img/iconos/iconoCisterna.png" alt="" height="18" />
-            <span>Productos</span>
-          </a>
-          <div
-            id="collapsePages"
-            class="collapse"
-            aria-labelledby="headingPages"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Stock:</h6>
-              <a class="collapse-item" href="login.html">Listado</a>
-              <a class="collapse-item" href="register.html">Registrar</a>
-              <div class="collapse-divider"></div>
-              <h6 class="collapse-header">Ventas:</h6>
-              <a class="collapse-item" href="404.html">Clientes</a>
-              <a class="collapse-item" href="blank.html">Pedidos</a>
+              <a class="collapse-item" href="#">Pendientes</a>
+              <a class="collapse-item" href="#">Ver todo</a>
             </div>
           </div>
         </li>

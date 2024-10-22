@@ -69,7 +69,7 @@
         <hr class="sidebar-divider" />
 
         <!-- Heading -->
-        <div class="sidebar-heading">Admin</div>
+        <div class="sidebar-heading">Administración</div>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
@@ -91,14 +91,9 @@
             data-parent="#accordionSidebar"
           >
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Información:</h6>
-              <a class="collapse-item" th:href="@{/user_list}">Listado</a>
-              <a class="collapse-item" th:href="@{/scanQR}"
-                >Escanear Asistencia</a
-              >
-              <a class="collapse-item" th:href="@{/attendance_control}"
-                >Asistencia</a
-              >
+              <h6 class="collapse-header">Acciones:</h6>
+              <a class="collapse-item" th:href="@{/scanQR}">Escanear asistencia</a>
+              <a class="collapse-item" th:href="@{/user_list}">Ver todo</a>
             </div>
           </div>
         </li>

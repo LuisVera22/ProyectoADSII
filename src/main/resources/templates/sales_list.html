@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Ventas</title>
+</head>
+<body>
+    <h1>Lista de Ventas</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID Venta</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Tipo de Pago</th>
+                <th>Cliente</th>
+                <th>Detalles de Venta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="sale : ${sales}">
+                <td th:text="${sale.idSale}"></td>
+                <td th:text="${sale.date}"></td>
+                <td th:text="${sale.state}"></td>
+                <td th:text="${sale.paymentType}"></td>
+                <td th:text="${sale.clientEntity.name}"></td>
+                <td>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="detail : ${sale.saleDetail}">
+                                <td th:text="${detail.product.name}"></td> <!-- Suponiendo que SaleDetailEntity tiene un campo 'product' con 'name' -->
+                                <td th:text="${detail.quantity}"></td>
+                                <td th:text="${detail.price}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
